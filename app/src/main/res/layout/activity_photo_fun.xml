@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            app:srcCompat="@drawable/olivia50noise"
+            app:srcCompat="@drawable/olivia10noise"
             android:layout_weight="1" />
 
         <ImageView
