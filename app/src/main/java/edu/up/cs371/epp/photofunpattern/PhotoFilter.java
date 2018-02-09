@@ -1,6 +1,7 @@
 package edu.up.cs371.epp.photofunpattern;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 
 /**
  *  class PhotoFilter is the abstract filter parent class. Its default behavior
@@ -36,8 +37,16 @@ public abstract class PhotoFilter {
     * @param inPixel is a 32 bit pixel that contains RGB color values
     * @return a new Pixel in which unchanged color components
     */
-    protected int transformPixel (int inPixel){
-        return inPixel;
+    protected int transformPixel (int inPixel, int pixel1, int pixel2, int pixel3, int pixel4, int pixel5, int pixel6, int pixel7, int pixel8){
+        int outPixel = 0;
+        int redPixel;
+        int greenPixel;
+        int bluePixel;
+        redPixel = (Color.red(inPixel) + Color.red(pixel1) + Color.red(pixel2) + Color.red(pixel3) + Color.red(pixel4) + Color.red(pixel4) + Color.red(pixel5) + Color.red(pixel6) + Color.red(pixel7) + Color.red(pixel8))/9;
+        greenPixel = (Color.green(inPixel) + Color.green(pixel1) + Color.green(pixel2) + Color.green(pixel3) + Color.green(pixel4) + Color.green(pixel4) + Color.green(pixel5) + Color.green(pixel6) + Color.green(pixel7) + Color.green(pixel8))/9;
+        bluePixel = (Color.blue(inPixel) + Color.blue(pixel1) + Color.blue(pixel2) + Color.blue(pixel3) + Color.blue(pixel4) + Color.blue(pixel4) + Color.blue(pixel5) + Color.blue(pixel6) + Color.blue(pixel7) + Color.blue(pixel8))/9;
+        outPixel = Color.argb(255, redPixel,greenPixel,bluePixel);
+        return outPixel;
     }
 
     /*
@@ -53,13 +62,33 @@ public abstract class PhotoFilter {
 
         Bitmap newBmp = Bitmap.createBitmap(width, height, inBmp.getConfig());
 
-        for (int w = 0; w < width; w++) {
-            for (int h = 0; h < height; h++) {
-                int inPixel = inBmp.getPixel(w,h);
-                int outPixel = transformPixel(inPixel);
-                newBmp.setPixel(w, h, outPixel);
+        for (int w = 1; w < width-1; w = w + 3) {
+            for (int h = 1; h < height-1; h = h + 3) {
+                //int inPixel = inBmp.getPixel(w,h);
+                int outPixel = transformPixel(
+                        inBmp.getPixel(w,h),
+                        inBmp.getPixel(w-1,h-1),
+                        inBmp.getPixel(w-1,h),
+                        inBmp.getPixel(w,h-1),
+                        inBmp.getPixel(w+1,h+1),
+                        inBmp.getPixel(w+1,h-1),
+                        inBmp.getPixel(w+1,h),
+                        inBmp.getPixel(w,h+1),
+                        inBmp.getPixel(w-1,h+1)
+                );
+
+                        newBmp.setPixel(w,h, outPixel);
+                        newBmp.setPixel(w-1,h-1, outPixel);
+                        newBmp.setPixel(w-1,h, outPixel);
+                        newBmp.setPixel(w,h-1, outPixel);
+                        newBmp.setPixel(w+1,h+1, outPixel);
+                        newBmp.setPixel(w+1,h-1, outPixel);
+                        newBmp.setPixel(w+1,h, outPixel);
+                        newBmp.setPixel(w,h+1, outPixel);
+                        newBmp.setPixel(w-1,h+1, outPixel);
             }
         }
+
         return newBmp;
     }
 }
